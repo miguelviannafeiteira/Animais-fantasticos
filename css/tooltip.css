@@ -1,0 +1,15 @@
+.tooltip {
+  position: absolute;
+  /* para ficar acima de todos os elementos */
+  z-index: 500;
+  /* Um z-index acima dos outros z-indexs da pagina para que fiquei por cima do elemento */
+  background:rgba(0, 0, 0, 0.6) ;
+  box-shadow: 0 0 0 2px #FB5, 0 0 0 6px rgba(0, 0, 0, 0.6) ;
+  padding-inline-end: .5rem;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  font-size: .875rem;
+  max-width: 170px;
+  border-radius: 2px;
+}

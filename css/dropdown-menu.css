@@ -1,0 +1,53 @@
+[data-dropdown] {
+  position: relative;
+  /* para que o dropdown-menu seja relativo ao menu e nao ao topo do site. Por padrao todos os li sao display flex, porque a gente colocou, isso tirou esse display flex */
+}
+
+[data-dropdown] .dropdown-menu {
+  display: none;
+}
+
+[data-dropdown]:hover .dropdown-menu,
+[data-dropdown].active .dropdown-menu {
+display: block;
+animation: show-up .3s forwards;
+}
+/* Se passar o mouse por cima ou se clicar, tant com o mouse como com o dedo no celular, vai abrir o dropdown */
+
+@keyframes show-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 38px; /* para nao ter um espaço entre o sobre e o dropdown*/
+  background: #e54;
+  border: 2px solid #333;
+  z-index: 200; 
+  /* se tirar o z-index e colocar um top de 150px o menu vai ficar atras do titulo animais */
+}
+
+.dropdown-menu:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -10px;
+  width: 0px;
+  height: 0px;
+  border-bottom: 10px solid #e54;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  /* para fazer o triangulo que aponta para o sobre */
+}
+
+.dropdown-menu li a:hover {
+  color: white;
+}
+
