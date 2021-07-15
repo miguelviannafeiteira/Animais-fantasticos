@@ -1,23 +1,44 @@
 import outsideClick from './outsideclick.js';
 
-export default function initDropDownMenu() {
-  const dropdownMenus = document.querySelectorAll('[data-dropdown]');
+export default class initDropDownMenu {
+  constructor(dropdownMenus, events) {
+    this.dropdownMenus = document.querySelectorAll(dropdownMenus);
 
-  function handleClick(event) {
+    //  define touchstart e click como argumento padrão de events caso o usuário não defina
+    if (events === undefined) {
+      this.events = ['touchstart', 'click'];
+    } else {
+      this.events = events;
+    }
+
+    this.activeClass = 'active';
+    this.activeDropdownMenu = this.activeDropdownMenu.bind(this);
+  }
+
+  //  Ativa o dropdownMenu e adiciona
+  //  a função que observa o clique fora dele
+  activeDropdownMenu(event) {
     event.preventDefault();
-    this.classList.add('active');
-    outsideClick(this, ['touchstart', 'click'], () => {
-//  esse this é para verificar para ver se quando to clicando no lado de fora é realmente no lado de fora e nao em cima do meu elemento para nao tirar ele. Entao nessa function esta sendo passado this, element e o callback
-      this.classList.remove('active');
+    const element = event.currentTarget;
+    element.classList.add(this.activeClass);
+    outsideClick(element, this.events, () => {
+      element.classList.remove(this.activeClass);
     });
   }
 
-  dropdownMenus.forEach((menu) => {
-    //  menu.addEventListener('click', handleClick);
-    //  menu.addEventListener('touchstart', handleClick); 
-    //  Esses dois eventos podem ser simplificados em uma array, como está abaixo.
-    ['touchstart', 'click'].forEach((userEvent) => {
-      menu.addEventListener(userEvent, handleClick);
+  //  adiciona os eventos ao dropdownMenu
+  addDropdownMenusEvent() {
+    this.dropdownMenus.forEach((menu) => {
+      this.events.forEach((userEvent) => {
+        menu.addEventListener(userEvent, this.activeDropdownMenu);
+      });
     });
-  });
+  }
+
+  init() {
+    if (this.dropdownMenus.length) {
+      this.addDropdownMenusEvent();
+    }
+    return this;
+  }
 }
