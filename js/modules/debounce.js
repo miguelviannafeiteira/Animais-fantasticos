@@ -11,3 +11,5 @@ export default function debounce(callback, delay) {
     }, delay);
   };
 }
+
+//  principalmente utilizado em evento de scroll e evento de re-size
