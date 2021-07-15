@@ -1,5 +1,3 @@
-import initFetchAnimais from "./fetch-animais";
-
 export default class AnimaNumeros {
   constructor(numeros, observerTarget, observerClass) {
     this.numeros = document.querySelectorAll(numeros);
@@ -42,6 +40,7 @@ export default class AnimaNumeros {
       this.animaNumeros();
     }
   }
+
   // Adiciona o MutationObserver para verificar
   //  Quando a classe ativo é adicionada ao element target
   addMutationObserver() {
