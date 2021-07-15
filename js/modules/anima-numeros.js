@@ -1,35 +1,59 @@
-export default function initAnimaNumeros() {
-  function animaNumeros() {
-    const numeros = document.querySelectorAll('[data-numero]');
+import initFetchAnimais from "./fetch-animais";
 
-    numeros.forEach((numero) => {
-      const total = +numero.innerText;
-      const incremento = Math.floor(total / 100);
+export default class AnimaNumeros {
+  constructor(numeros, observerTarget, observerClass) {
+    this.numeros = document.querySelectorAll(numeros);
+    this.observerTarget = document.querySelector(observerTarget);
+    this.observerClass = observerClass;
 
-      let start = 0;
-      const timer = setInterval(() => {
-        start += incremento;// start = start + incremento;
-        numero.innerText = start;
-        if (start > total) {
-          numero.innerText = total;
-          clearInterval(timer);
-        }
-      }, 50 * Math.random());
+    // bind o this do objeto ao callback da mutação
+    this.handleMutation = this.handleMutation.bind(this);
+  }
+
+  //  Recebe um elemento do dom, com numero em seu texto
+  //  incrementa a partir de 0 até o número final
+  static incrementarNumero(numero) {
+    const total = +numero.innerText;
+    const incremento = Math.floor(total / 100);
+
+    let start = 0;
+    const timer = setInterval(() => {
+      start += incremento;
+      numero.innerText = start;
+      if (start > total) {
+        numero.innerText = total;
+        clearInterval(timer);
+      }
+    }, 50 * Math.random());
+  }
+
+  //  Ativa incrementar número para cada
+  //  número selecionado do dom
+  animaNumeros() {
+    this.numeros.forEach((numero) => {
+      this.constructor.incrementarNumero(numero)
     });
   }
 
-  // Função para criar um observador que vai olhar só para a section dos numeros, para que assim ela nao carregue logo que a pagina for aberta, mas sim quando o usuário chegar na section
-  let observer;
-  function handleMutation(mutation) {
-    // console.log('Mutou'); //por causa do else if do scroll animacao o mutou so ocorre quando passa por cima dos Números
-    if (mutation[0].target.classList.contains('ativo')) {
-      observer.disconnect(); // quando ocorrer a animação ele para de observar
-      animaNumeros();
+  //  Função que ocorre quando a mutação ocorrer
+  handleMutation(mutation) {
+    if (mutation[0].target.classList.contains(this.observerClass)) {
+      this.observer.disconnect();
+      this.animaNumeros();
     }
   }
-  observer = new MutationObserver(handleMutation);
+  // Adiciona o MutationObserver para verificar
+  //  Quando a classe ativo é adicionada ao element target
+  addMutationObserver() {
+    this.observer = new MutationObserver(this.handleMutation);
+    this.observer.observe(this.observerTarget, { attributes: true });
+  }
 
-  const observeTarget = document.querySelector('.numeros');
-
-  observer.observe(observeTarget, { attributes: true });
+  init() {
+    //  Para nao dar erro caso em fetch-animais "const animaNumeros = new AnimaNumeros('[data-numero]', '.numeros', 'ativo');" Caso em algum desses parametros tenha algo inexistente nao vai dar erro no script
+    if (this.numeros.length && this.observerTarget) {
+      this.addMutationObserver();
+    }
+    return this;
+  }
 }
