@@ -9,8 +9,8 @@
 
 [data-dropdown]:hover .dropdown-menu,
 [data-dropdown].active .dropdown-menu {
-display: block;
-animation: show-up .3s forwards;
+  display: block;
+  animation: show-up 0.3s forwards;
 }
 /* Se passar o mouse por cima ou se clicar, tant com o mouse como com o dedo no celular, vai abrir o dropdown */
 
@@ -30,12 +30,12 @@ animation: show-up .3s forwards;
   top: 38px; /* para nao ter um espaço entre o sobre e o dropdown*/
   background: #e54;
   border: 2px solid #333;
-  z-index: 200; 
+  z-index: 200;
   /* se tirar o z-index e colocar um top de 150px o menu vai ficar atras do titulo animais */
 }
 
 .dropdown-menu:before {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   top: -10px;
@@ -51,3 +51,10 @@ animation: show-up .3s forwards;
   color: white;
 }
 
+@media (max-width: 700px) {
+  [data-dropdown] .dropdown-menu {
+    display: block;
+    animation: show-up 0.3s forwards;
+    /* no mobile o menu dropdown ja aparece ativo quando e clica no menu */
+  }
+}
